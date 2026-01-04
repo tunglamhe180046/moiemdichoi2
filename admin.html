@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin - Kiểm tra kết quả</title>
+    <style>
+        body { font-family: sans-serif; padding: 20px; background: #ffe5ec; }
+        table { width: 100%; border-collapse: collapse; background: white; }
+        th, td { border: 1px solid #ddd; padding: 12px; text-align: left; }
+        th { background-color: #ff8fa3; color: white; }
+        h1 { color: #c9184a; }
+        button { background: #c9184a; color: white; border: none; padding: 10px; cursor: pointer; }
+    </style>
+</head>
+<body>
+<h1>Danh sách người đẹp đã đồng ý đi chơi</h1>
+<button onclick="clearData()">Xóa dữ liệu</button>
+<br><br>
+<table id="resultTable">
+    <thead>
+    <tr>
+        <th>Tên</th>
+        <th>Thứ</th>
+        <th>Giờ</th>
+        <th>Địa điểm</th> <th>Thời gian đặt</th>
+    </tr>
+    </thead>
+    <tbody></tbody>
+</table>
+
+<script>
+    function loadData() {
+        const data = JSON.parse(localStorage.getItem('love_bookings')) || [];
+        const tbody = document.querySelector('#resultTable tbody');
+        tbody.innerHTML = "";
+
+        data.forEach(item => {
+            const row = `<tr>
+    <td>${item.name}</td>
+    <td>${item.date}</td>
+    <td>${item.time}</td>
+    <td>${item.location || 'Chưa có'}</td> <td>${item.timestamp}</td>
+</tr>`;
+            tbody.innerHTML += row;
+        });
+    }
+
+    function clearData() {
+        if(confirm("Xóa hết dữ liệu nha?")) {
+            localStorage.removeItem('love_bookings');
+            loadData();
+        }
+    }
+
+    loadData();
+</script>
+</body>
+</html>

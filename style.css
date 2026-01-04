@@ -1,0 +1,220 @@
+:root {
+    --primary: #ff8fa3;
+    --dark: #c9184a;
+    --white: #fff0f3;
+    --bg: #ffe5ec;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Nunito', sans-serif;
+    background-color: var(--bg);
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden; /* Tránh thanh cuộn khi chữ rơi */
+}
+
+.screen {
+    display: none;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    text-align: center;
+}
+
+.screen.active {
+    display: flex;
+}
+
+.card {
+    background: white;
+    padding: 2rem;
+    border-radius: 20px;
+    box-shadow: 0 10px 25px rgba(255, 107, 129, 0.2);
+    width: 90%;
+    max-width: 500px;
+    z-index: 10;
+}
+
+h1, h2, h3 {
+    color: var(--dark);
+    font-family: 'Dancing Script', cursive;
+}
+
+input {
+    width: 80%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 2px solid var(--primary);
+    border-radius: 10px;
+    outline: none;
+}
+
+button {
+    background-color: var(--primary);
+    color: white;
+    border: none;
+    padding: 10px 25px;
+    border-radius: 50px;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: 0.3s;
+    margin: 10px;
+}
+
+button:hover {
+    background-color: var(--dark);
+    transform: scale(1.05);
+}
+
+.error {
+    color: red;
+    font-size: 0.9rem;
+}
+
+/* Nút No chạy loạn */
+.buttons {
+    display: flex;             /* Xếp ngang */
+    justify-content: center;   /* Căn giữa */
+    align-items: center;
+    gap: 20px;                 /* Khoảng cách giữa 2 nút */
+    margin-top: 20px;
+    position: relative;        /* Để nút No có thể chạy tương đối trong khung này */
+    min-height: 60px;          /* Giữ chiều cao để nút No chạy không bị mất khung */
+}
+
+/* Định dạng chung cho 2 nút để kích thước bằng nhau */
+#btnYes, #btnNo {
+    width: 150px;              /* Chiều rộng cố định bằng nhau */
+    margin: 0;                 /* Xóa margin thừa */
+    position: relative;        /* Mặc định là tĩnh */
+    z-index: 2;
+}
+
+/* Tìm đến đoạn #btnNo cũ và sửa lại như sau */
+#btnNo {
+    /* Ban đầu để relative để đứng cạnh nút Yes */
+    position: relative;
+
+    /* Hiệu ứng lướt đi mượt mà trong 0.3 giây */
+    transition: left 0.3s ease, top 0.3s ease;
+
+    /* Đảm bảo nút No luôn nổi lên trên cùng, không bị các chữ che mất */
+    z-index: 1000;
+}
+
+/* Calendar */
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.day-btn {
+    background: var(--white);
+    color: var(--dark);
+    border: 1px solid var(--primary);
+    padding: 10px;
+    font-size: 0.9rem;
+}
+
+/* Popup */
+.popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    padding: 20px;
+    border: 2px solid var(--dark);
+    border-radius: 15px;
+    box-shadow: 0 0 100px rgba(0,0,0,0.5);
+    z-index: 100;
+}
+
+.popup.hidden {
+    display: none;
+}
+
+/* Hiệu ứng chữ rơi trang cuối */
+.falling-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden; /* Cắt những chữ rơi ra ngoài */
+    pointer-events: none;
+    z-index: 0; /* Nằm dưới popup cảm ơn */
+}
+
+.falling-text {
+    position: absolute;
+    top: -50px; /* Xuất phát từ trên đỉnh màn hình (bị khuất) */
+    color: var(--dark);
+    font-family: 'Dancing Script', cursive;
+    font-weight: bold;
+    user-select: none;
+    white-space: nowrap;
+    animation: fallLinear linear forwards; /* Chạy animation tên là fallLinear */
+}
+
+/* Định nghĩa lại chuyển động rơi */
+@keyframes fallLinear {
+    0% {
+        transform: translateY(0) rotate(0deg);
+        opacity: 0;
+    }
+    10% {
+        opacity: 1; /* Hiện ra từ từ */
+    }
+    100% {
+        transform: translateY(110vh) rotate(20deg); /* Rơi quá màn hình 100vh */
+        opacity: 0.8;
+    }
+}
+/* Responsive */
+@media (max-width: 600px) {
+    .calendar-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .card {
+        width: 85%;
+    }
+}
+
+/* Thêm vào cuối file CSS */
+
+.options-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Chia 2 cột */
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.options-grid button {
+    margin: 0; /* Xóa margin cũ */
+    padding: 15px 5px;
+    font-size: 1rem;
+    background-color: var(--white);
+    color: var(--dark);
+    border: 2px solid var(--primary);
+}
+
+.options-grid button:hover {
+    background-color: var(--primary);
+    color: white;
+}
+
+#otherInputArea.hidden {
+    display: none;
+}
