@@ -1,92 +1,92 @@
-// --- Cấu hình ---
+// --- 1. CẤU HÌNH EMAIL (THAY CỦA BẠN VÀO ĐÂY) ---
+const EMAIL_SERVICE_ID = "service_a25r0vi";  // Thay Service ID
+const EMAIL_TEMPLATE_ID = "template_24twxza"; // Thay Template ID
+const EMAIL_PUBLIC_KEY = "Afc7tgUxfB9aumfpD";     // Thay Public Key
+
+// Khởi tạo EmailJS
+(function() {
+    emailjs.init(EMAIL_PUBLIC_KEY);
+})();
+
+// --- 2. Cấu hình nội dung ---
+// --- Thay thế danh sách cũ bằng danh sách này ---
 const COMPLIMENTS = [
-    "Xinh đẹp tuyệt trần", "Dễ thương nhất hệ mặt trời", "Nụ cười tỏa nắng",
-    "Đôi mắt biết nói", "Thông minh, hóm hỉnh", "Dịu dàng",
-    "Là duy nhất", "Đáng yêu xỉu", "Mãi yêu em",
-    "Công chúa của anh", "Xinh gái số 1", "Ngọt ngào như kẹo",
-    "My Sunshine", "My Everything", "Vợ tương lai",
-    "Đẹp không góc chết", "Thần tiên tỷ tỷ", "Yêu em 3000",
-    "Cute phô mai que", "Mãi bên nhau bạn nhé"
+    "Xinh đẹp tuyệt trần",
+    "Dễ thương nhất hệ mặt trời",
+    "Nụ cười tỏa nắng",
+    "Đôi mắt biết nói",
+    "Thần thái ngút ngàn",
+    "Xinh lung linh",
+    "Đáng yêu xỉu",
+    "Xinh không góc chết",
+    "Duyên dáng quá nè",
+    "Xinh gái số 1",
+    "Ngọt ngào như kẹo",
+    "Cute phô mai que",
+    "Xinh như búp bê",
+    "Rạng rỡ như hoa",
+    "Dễ thương muốn xỉu",
+    "Siêu cấp đáng yêu"
 ];
 
 let noClickCount = 0;
 let selectedDate = "";
 let selectedTime = "";
-let selectedLocation = ""; // Biến lưu địa điểm
+let selectedLocation = "";
 const bgMusic = document.getElementById('bgMusic');
 
-// --- 1. Xử lý Nhạc (Chiến thuật: Bắt sự kiện click đầu tiên) ---
-// --- 1. Xử lý Nhạc (Phiên bản Mobile "Bắt dính") ---
-
-// Hàm thử phát nhạc
+// --- 3. Xử lý Nhạc (Phiên bản "Bắt dính" Mobile/PC) ---
 function tryPlayMusic() {
-    // Nếu nhạc chưa chạy (paused) thì mới thử phát
     if (bgMusic.paused) {
         bgMusic.play().then(() => {
-            // Nếu phát thành công -> Xóa các sự kiện đi cho nhẹ máy
             removeUserInteractions();
-            console.log("Đã phát nhạc thành công!");
-        }).catch(error => {
-            console.log("Vẫn chưa được phép phát nhạc, chờ cú chạm tiếp theo.");
-        });
+        }).catch(e => console.log("Chờ tương tác..."));
     }
 }
-
-// Hàm xóa sự kiện (để không gọi lại nhiều lần sau khi đã phát được)
 function removeUserInteractions() {
     document.removeEventListener('click', tryPlayMusic);
     document.removeEventListener('touchstart', tryPlayMusic);
     document.removeEventListener('keydown', tryPlayMusic);
     document.removeEventListener('focusin', tryPlayMusic);
 }
-
-// Gắn sự kiện ngay khi web tải xong
 window.onload = function() {
-    // 1. Thử phát ngay lập tức (dành cho Chrome settings dễ)
-    tryPlayMusic();
-
-    // 2. Giăng bẫy bắt mọi hành động có thể trên điện thoại và máy tính
-    document.addEventListener('click', tryPlayMusic);       // Chuột click
-    document.addEventListener('touchstart', tryPlayMusic);  // Ngón tay chạm màn hình (QUAN TRỌNG CHO MOBILE)
-    document.addEventListener('keydown', tryPlayMusic);     // Gõ phím
-
-    // 3. Bắt riêng sự kiện khi chạm vào ô nhập tên
+    tryPlayMusic(); // Thử ngay khi load
+    // Giăng bẫy bắt sự kiện để bật nhạc
+    document.addEventListener('click', tryPlayMusic);
+    document.addEventListener('touchstart', tryPlayMusic);
+    document.addEventListener('keydown', tryPlayMusic);
     const inputName = document.getElementById('nameInput');
-    if(inputName) {
-        inputName.addEventListener('focus', tryPlayMusic); // Khi ô nhập tên được chọn
-    }
+    if(inputName) inputName.addEventListener('focus', tryPlayMusic);
 };
 
-// --- Chuyển màn hình ---
+// --- 4. Chuyển màn hình ---
 function showScreen(screenId) {
     document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
     document.getElementById(screenId).classList.add('active');
 }
 
-// --- Màn 1: Nhập tên & Bật nhạc ---
+// --- Màn 1: Nhập tên ---
 function submitName() {
     const input = document.getElementById('nameInput').value.trim();
     if (input === "") {
         document.getElementById('errorMsg').innerText = "Nhập tên cho anh biết với nào!";
     } else {
-        // KÍCH HOẠT NHẠC Ở ĐÂY LÀ CHẮC CHẮN NHẤT
-        bgMusic.play();
-
+        bgMusic.play(); // Kích hoạt lại cho chắc
         showScreen('screen2');
         setupNoButton();
     }
 }
 
-// --- Màn 2: Nút No chạy loạn (Giữ nguyên logic cũ) ---
+// --- Màn 2: Nút No chạy trốn ---
 function setupNoButton() {
     const btnNo = document.getElementById('btnNo');
     const btnYes = document.getElementById('btnYes');
 
-    // Desktop
+    // PC: Di chuột
     btnNo.addEventListener('mouseenter', () => {
         if(window.innerWidth > 768) escapeButton(btnNo);
     });
-    // Mobile
+    // Mobile: Chạm
     btnNo.addEventListener('click', () => {
         if(window.innerWidth <= 768) {
             noClickCount++;
@@ -142,81 +142,65 @@ function closePopup() {
 function submitDate() {
     const time = document.getElementById('timeInput').value;
     if (!time) { alert("Chọn giờ đi bé!"); return; }
-
-    selectedTime = time; // Lưu giờ lại
+    selectedTime = time;
     closePopup();
-
-    // THAY ĐỔI: Không hiện kết quả ngay, mà chuyển sang chọn địa điểm
-    showScreen('screenLocation');
+    showScreen('screenLocation'); // Chuyển sang chọn địa điểm
 }
 
-// --- Màn 3.5: Chọn địa điểm (MỚI) ---
-
-// Nếu chọn các nút có sẵn
+// --- Màn 3.5: Chọn địa điểm & GỬI EMAIL ---
 function chooseLocation(loc) {
     selectedLocation = loc;
-    saveAndFinish(); // Lưu và kết thúc
+    sendEmailAndFinish();
 }
 
-// Nếu chọn "Khác"
 function showOtherInput() {
     document.getElementById('otherInputArea').classList.remove('hidden');
 }
 
-// Hàm chặn chữ cấm khi đang nhập
 function checkForbiddenWords(input) {
     const val = input.value.toLowerCase();
-    const forbidden = ["không", "khong", "no", "ko", "bận", "đéo", "cút"]; // Danh sách từ cấm
-    const warning = document.getElementById('warningMsg');
-
-    // Kiểm tra xem có chứa từ cấm không
-    const hasForbidden = forbidden.some(word => val.includes(word));
-
-    if (hasForbidden) {
-        warning.innerText = "Hư nha! Không được từ chối!";
-        // Xóa sạch ô nhập hoặc xóa từ đó
+    const forbidden = ["không", "khong", "no", "ko", "bận", "đéo", "cút"];
+    if (forbidden.some(word => val.includes(word))) {
+        document.getElementById('warningMsg').innerText = "Hư nha! Không được từ chối!";
         input.value = "";
     } else {
-        warning.innerText = "";
+        document.getElementById('warningMsg').innerText = "";
     }
 }
 
 function submitCustomLocation() {
-    const input = document.getElementById('customLocation');
-    const val = input.value.trim();
-    if (val === "") {
-        alert("Nhập địa điểm đi nè!");
-        return;
-    }
+    const val = document.getElementById('customLocation').value.trim();
+    if (val === "") { alert("Nhập địa điểm đi nè!"); return; }
     selectedLocation = val;
-    saveAndFinish();
+    sendEmailAndFinish();
 }
 
-// Hàm lưu chung và chuyển trang cuối
-function saveAndFinish() {
-    // Lưu data
-    const booking = {
-        name: document.getElementById('nameInput').value,
+// HÀM QUAN TRỌNG: GỬI EMAIL
+function sendEmailAndFinish() {
+    const btnSubmit = document.querySelector('#screenLocation button');
+    if(btnSubmit) btnSubmit.innerText = "Đang gửi cho anh...";
+
+    const params = {
+        from_name: document.getElementById('nameInput').value,
         date: selectedDate,
         time: selectedTime,
-        location: selectedLocation, // Lưu thêm địa điểm
-        timestamp: new Date().toLocaleString()
+        location: selectedLocation
     };
 
-    let allBookings = JSON.parse(localStorage.getItem('love_bookings')) || [];
-    allBookings.push(booking);
-    localStorage.setItem('love_bookings', JSON.stringify(allBookings));
-
-    showFinalScreen();
+    emailjs.send(EMAIL_SERVICE_ID, EMAIL_TEMPLATE_ID, params)
+        .then(function(res) {
+            console.log('Email sent!', res.status);
+            showFinalScreen();
+        }, function(error) {
+            console.log('Failed...', error);
+            alert("Lỗi mạng xíu, nhưng anh đã ghi nhận trong tim rồi ^^");
+            showFinalScreen();
+        });
 }
 
 // --- Màn 4: Kết thúc ---
 function showFinalScreen() {
     showScreen('screen4');
-    startFallingHearts();
-}
-
-function startFallingHearts() {
     const container = document.getElementById('fallingContainer');
     setInterval(() => {
         const span = document.createElement('span');
@@ -226,9 +210,8 @@ function startFallingHearts() {
         span.style.fontSize = (Math.random() * 1.5 + 1) + 'rem';
         const colors = ['#ff8fa3', '#c9184a', '#ff4d6d', '#590d22', '#ffccd5'];
         span.style.color = colors[Math.floor(Math.random() * colors.length)];
-        const duration = Math.random() * 5 + 3;
-        span.style.animationDuration = duration + 's';
+        span.style.animationDuration = (Math.random() * 5 + 3) + 's';
         container.appendChild(span);
-        setTimeout(() => span.remove(), duration * 1000);
+        setTimeout(() => span.remove(), 8000);
     }, 300);
 }
