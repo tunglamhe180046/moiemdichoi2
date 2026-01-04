@@ -50,14 +50,21 @@
 
 <div id="screenLocation" class="screen">
     <div class="card">
-        <h1>Em đi ăn Dookki với anh nhé? 🥘</h1>
+
+        <div class="dookki-header">
+            <h1>Em đi ăn Dookki với anh nhé? 🥘</h1>
+            <button class="btn-ok" onclick="chooseLocation('Dookki')">Oke lun 👌</button>
+        </div>
+
         <p>Nếu không thì mình có thể:</p>
+
         <div class="options-grid">
             <button onclick="chooseLocation('Đi xem phim')">Đi xem phim 🎬</button>
             <button onclick="chooseLocation('Đi uống nước')">Đi uống nước 🧋</button>
             <button onclick="chooseLocation('Đi ăn cơm mì')">Đi ăn cơm mì 🍜</button>
             <button onclick="showOtherInput()">Khác (Nhập tùy ý) ✨</button>
         </div>
+
         <div id="otherInputArea" class="hidden" style="margin-top: 15px;">
             <input type="text" id="customLocation" placeholder="Nhập địa điểm em muốn..." oninput="checkForbiddenWords(this)">
             <p id="warningMsg" class="error"></p>
@@ -65,7 +72,6 @@
         </div>
     </div>
 </div>
-
 <div id="screen4" class="screen">
     <div class="falling-container" id="fallingContainer"></div>
     <div class="card final-card">

@@ -218,3 +218,42 @@ button:hover {
 #otherInputArea.hidden {
     display: none;
 }
+
+/* --- CSS CHO PHẦN DOOKKI & NÚT OKE --- */
+
+.dookki-header {
+    display: flex;             /* Xếp ngang */
+    align-items: center;       /* Căn giữa theo chiều dọc */
+    justify-content: center;   /* Căn giữa trang */
+    flex-wrap: wrap;           /* Tự xuống dòng nếu màn hình điện thoại quá bé */
+    gap: 15px;                 /* Khoảng cách giữa chữ và nút */
+    margin-bottom: 20px;
+}
+
+.dookki-header h1 {
+    margin: 0;                 /* Xóa lề thừa để căn cho chuẩn */
+    line-height: 1.2;
+}
+
+.btn-ok {
+    background-color: #2ecc71; /* Màu xanh lá (Đồng ý) */
+    color: white;
+    font-weight: bold;
+    padding: 10px 20px;
+    border: 2px solid #27ae60;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    transform: scale(1.1);     /* Phóng to nhẹ một chút cho nổi */
+    animation: pulse 2s infinite; /* Hiệu ứng nhấp nháy mời gọi */
+}
+
+.btn-ok:hover {
+    background-color: #27ae60;
+    transform: scale(1.2);
+}
+
+/* Hiệu ứng nhịp tim cho nút Oke */
+@keyframes pulse {
+    0% { transform: scale(1.1); }
+    50% { transform: scale(1.15); }
+    100% { transform: scale(1.1); }
+}
